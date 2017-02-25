@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+import sys
+import argparse
+import vizier
+
+
+parser = argparse.ArgumentParser(description="Query PPMXL via ViZieR.")
+parser.add_argument('--ra', help='RA in decimal degrees', type=float)
+parser.add_argument('--dec', help='Dec in decimal degrees', type=float)
+parser.add_argument('--radius', help='Radius of query in degrees',
+    type=float, default=0.001)
+parser.add_argument('--csv', help='Dump the query results to CSV',
+    dest='csv', action='store_true')
+parser.add_argument('--stdout', help='Print the query results to stdout',
+    dest='stdout', action='store_true')
+args = parser.parse_args()
+
+df = vizier.PPMXL().query(args.ra, args.dec, args.radius)
+
+if args.csv:
+    fp = 'ppmxl_ra{}_dec{}_r{}.csv'.format(args.ra, args.dec, args.radius)
+    df.to_csv(fp, index=False)
+
+if args.stdout:
+    print df
