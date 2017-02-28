@@ -12,8 +12,6 @@ parser.add_argument('--radius', help='Radius of query in degrees',
     type=float, default=0.001)
 parser.add_argument('--csv', help='Dump the query results to CSV',
     dest='csv', action='store_true')
-parser.add_argument('--stdout', help='Print the query results to stdout',
-    dest='stdout', action='store_true')
 args = parser.parse_args()
 
 df = vizier.PPMXL().query(args.ra, args.dec, args.radius)
@@ -21,6 +19,5 @@ df = vizier.PPMXL().query(args.ra, args.dec, args.radius)
 if args.csv:
     fp = 'ppmxl_ra{}_dec{}_r{}.csv'.format(args.ra, args.dec, args.radius)
     df.to_csv(fp, index=False)
-
-if args.stdout:
+else:
     print df
